@@ -1,0 +1,121 @@
+version: "3"
+services:
+  # MITRE ATT&CK (no API key needed)
+  connector-mitre:
+    image: opencti/connector-mitre:6.2.0
+    environment:
+      OPENCTI_URL: http://opencti:8080
+      OPENCTI_TOKEN: ${OPENCTI_ADMIN_TOKEN}
+      CONNECTOR_ID: ${CONNECTOR_MITRE_TOKEN}
+      CONNECTOR_NAME: "MITRE ATT&CK"
+      CONNECTOR_SCOPE: "marking-definition,identity,attack-pattern,course-of-action,intrusion-set,campaign,malware,tool,vulnerability,x-mitre-matrix,x-mitre-tactic,x-mitre-collection"
+      CONNECTOR_CONFIDENCE_LEVEL: 75
+      CONNECTOR_UPDATE_EXISTING_DATA: "true"
+      CONNECTOR_LOG_LEVEL: error
+      MITRE_REMOVE_STATEMENT_MARKING: "true"
+      MITRE_INTERVAL: 7  # days between full refresh
+    restart: always
+  # CVE / NVD Vulnerabilities
+  connector-cve:
+    image: opencti/connector-cve:6.2.0
+    volumes:
+      - ./patches/cve/api.py:/opt/opencti-connector-cve/services/client/api.py:ro
+      - ./patches/cve/vulnerability.py:/opt/opencti-connector-cve/services/client/vulnerability.py:ro
+    environment:
+      OPENCTI_URL: http://opencti:8080
+      OPENCTI_TOKEN: ${OPENCTI_ADMIN_TOKEN}
+      CONNECTOR_ID: ${CONNECTOR_CVE_TOKEN}
+      CONNECTOR_NAME: "Common Vulnerabilities and Exposures"
+      CONNECTOR_SCOPE: "identity,vulnerability"
+      CONNECTOR_CONFIDENCE_LEVEL: 75
+      CONNECTOR_LOG_LEVEL: info
+      CONNECTOR_UPDATE_EXISTING_DATA: "true"
+      CVE_BASE_URL: "https://services.nvd.nist.gov/rest/json/cves"
+      CVE_API_KEY: ${NVD_API_KEY}
+      CVE_MAX_DATE_RANGE: 120
+      CVE_MAINTAIN_DATA: "true"
+      CVE_INTERVAL: 2
+    restart: always
+  # AlienVault OTX
+  connector-alienvault:
+    image: opencti/connector-alienvault:6.2.0
+    environment:
+      OPENCTI_URL: http://opencti:8080
+      OPENCTI_TOKEN: ${OPENCTI_ADMIN_TOKEN}
+      CONNECTOR_ID: ${CONNECTOR_ALIENVAULT_TOKEN}
+      CONNECTOR_NAME: "AlienVault OTX"
+      CONNECTOR_SCOPE: "stix-core-object"
+      CONNECTOR_CONFIDENCE_LEVEL: 40
+      CONNECTOR_LOG_LEVEL: error
+      ALIENVAULT_BASE_URL: "https://otx.alienvault.com"
+      ALIENVAULT_API_KEY: ${ALIENVAULT_API_KEY}
+      ALIENVAULT_TLP: "White"
+      ALIENVAULT_CREATE_OBSERVABLES: "true"
+      ALIENVAULT_CREATE_INDICATORS: "true"
+      ALIENVAULT_PULSE_START_TIMESTAMP: "2020-01-01T00:00:00"
+      ALIENVAULT_REPORT_STATUS: "New"
+      ALIENVAULT_REPORT_TYPE: "threat-report"
+      ALIENVAULT_GUESS_MALWARE: "false"
+      ALIENVAULT_GUESS_CVE: "false"
+      ALIENVAULT_INTERVAL: 30   # minutes
+    restart: always
+  # Abuse.ch SSL Blacklist
+  connector-abuse-ssl:
+    image: opencti/connector-abuse-ssl:6.2.0
+    environment:
+      OPENCTI_URL: http://opencti:8080
+      OPENCTI_TOKEN: ${OPENCTI_ADMIN_TOKEN}
+      CONNECTOR_ID: ${CONNECTOR_MALWAREBAZAAR_TOKEN}
+      CONNECTOR_NAME: "Abuse.ch SSL Blacklist"
+      CONNECTOR_SCOPE: "stix-core-object"
+      CONNECTOR_CONFIDENCE_LEVEL: 50
+      CONNECTOR_LOG_LEVEL: error
+      ABUSE_SSL_URL: "https://sslbl.abuse.ch/blacklist/sslblacklist.csv"
+      ABUSE_SSL_INTERVAL: 30  # minutes
+    restart: always
+  # Abuse.ch URLhaus
+  connector-urlhaus:
+    image: opencti/connector-urlhaus:6.2.0
+    environment:
+      OPENCTI_URL: http://opencti:8080
+      OPENCTI_TOKEN: ${OPENCTI_ADMIN_TOKEN}
+      CONNECTOR_ID: ${CONNECTOR_URLHAUS_TOKEN}
+      CONNECTOR_NAME: "Abuse.ch URLhaus"
+      CONNECTOR_SCOPE: "stix-core-object"
+      CONNECTOR_CONFIDENCE_LEVEL: 40
+      CONNECTOR_LOG_LEVEL: error
+      URLHAUS_CSV_URL: "https://urlhaus.abuse.ch/downloads/csv_recent/"
+      URLHAUS_IMPORT_OFFLINE: "true"
+      URLHAUS_INTERVAL: 2  # hours
+    restart: always
+  connector-threatfox:
+    image: opencti/connector-threatfox:6.2.0
+    environment:
+      OPENCTI_URL: http://opencti:8080
+      OPENCTI_TOKEN: ${OPENCTI_ADMIN_TOKEN}
+      CONNECTOR_ID: ${CONNECTOR_THREATFOX_TOKEN}
+      CONNECTOR_NAME: "ThreatFox"
+      CONNECTOR_SCOPE: "stix-core-object"
+      CONNECTOR_CONFIDENCE_LEVEL: 40
+      CONNECTOR_LOG_LEVEL: error
+      THREATFOX_API_URL: "https://threatfox-api.abuse.ch/api/v1/"
+      THREATFOX_CREATE_INDICATORS: "true"
+      THREATFOX_CREATE_OBSERVABLES: "true"
+      THREATFOX_INTERVAL: 3
+    restart: always
+  connector-import-document:
+    image: opencti/connector-import-document:6.2.0
+    environment:
+      OPENCTI_URL: http://opencti:8080
+      OPENCTI_TOKEN: ${OPENCTI_ADMIN_TOKEN}
+      CONNECTOR_ID: ${CONNECTOR_IMPORT_DOCUMENT_TOKEN}
+      CONNECTOR_NAME: "ImportDocument"
+      CONNECTOR_SCOPE: "application/pdf,text/plain,text/html"
+      CONNECTOR_AUTO: "true"
+      CONNECTOR_CONFIDENCE_LEVEL: 75
+      CONNECTOR_LOG_LEVEL: error
+    restart: always
+networks:
+  default:
+    name: opencti_network
+    external: true

@@ -1,0 +1,35 @@
+# The Intelligent Shield
+
+OpenCTI deployment assets and documentation for AI-driven threat intelligence enrichment with Claude.
+
+This repository contains:
+
+- Docker Compose files for the OpenCTI core stack and connectors.
+- A custom `connectors/ai-enrichment` internal enrichment connector.
+- A Docusaurus documentation site in `docs-site/` based on the Medium article, with local copies of the article infographics and screenshots.
+- A sanitized `.env.example` for local setup.
+
+## Safety
+
+The real `.env`, local Claude settings, and token scratch files are intentionally ignored by Git. Create a local `.env` from `.env.example` and fill in your own values.
+
+## Documentation Site
+
+```bash
+cd docs-site
+npm install
+npm run build
+npm start
+```
+
+The article page is available at `/docs/intelligent-shield`.
+
+## OpenCTI Stack
+
+```bash
+docker compose up -d
+docker compose -f docker-compose.connectors.yml up -d
+docker compose -f docker-compose.ai.yml up -d --build
+```
+
+Use the deployment guide for full configuration and operational notes.

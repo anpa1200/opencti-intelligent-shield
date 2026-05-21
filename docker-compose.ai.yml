@@ -1,0 +1,22 @@
+version: "3"
+services:
+  connector-ai-enrichment:
+    build:
+      context: ./connectors/ai-enrichment
+      dockerfile: Dockerfile
+    environment:
+      OPENCTI_URL: http://opencti:8080
+      OPENCTI_TOKEN: ${OPENCTI_ADMIN_TOKEN}
+      CONNECTOR_ID: ${CONNECTOR_AI_ENRICHMENT_TOKEN}
+      CONNECTOR_NAME: "AI Enrichment (Claude)"
+      CONNECTOR_LOG_LEVEL: info
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      AI_MODEL: claude-opus-4-7
+      AI_ENRICHMENT_REPORTS: "true"
+      AI_ENRICHMENT_MALWARE: "true"
+      AI_ENRICHMENT_THREAT_ACTORS: "true"
+    restart: always
+networks:
+  default:
+    name: opencti_network
+    external: true

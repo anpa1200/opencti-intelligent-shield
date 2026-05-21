@@ -1,0 +1,59 @@
+import time
+
+import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util import Retry
+
+from .endpoints import BASE_URL
+
+
+class CVEClient:
+    def __init__(self, api_key, helper, header):
+        headers = {"User-Agent": header}
+        if api_key:
+            headers["apiKey"] = api_key
+        self.token = api_key
+        self.helper = helper
+        self.session = requests.Session()
+        self.session.headers.update(headers)
+
+    @staticmethod
+    def _request_data(self, api_url: str, params=None):
+        try:
+            response = self.request(api_url, params)
+            info_msg = f"[API] HTTP Get Request to endpoint for path ({api_url})"
+            self.helper.log_info(info_msg)
+            response.raise_for_status()
+            return response
+        except requests.RequestException as err:
+            error_msg = f"[API] Error while fetching data from {api_url}: {str(err)}"
+            self.helper.log_error(error_msg)
+            return None
+
+    def request(self, api_url, params):
+        retry_strategy = Retry(
+            total=4,
+            backoff_factor=6,
+            status_forcelist=[429, 500, 502, 503, 504],
+        )
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        self.session.mount("http://", adapter)
+        self.session.mount("https://", adapter)
+
+        response = self.session.get(api_url, params=params)
+
+        if response.status_code == 200:
+            time.sleep(6)
+            return response
+        else:
+            raise Exception(
+                "[API] Attempting to retrieve data failed. Wait for connector to re-run..."
+            )
+
+    def get_complete_collection(self, cve_params=None):
+        try:
+            response = self._request_data(self, BASE_URL, params=cve_params)
+            cve_collection = response.json()
+            return cve_collection
+        except Exception as err:
+            self.helper.log_error(err)
