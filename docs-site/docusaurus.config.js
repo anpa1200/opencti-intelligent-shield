@@ -70,7 +70,7 @@ const config = {
         title: 'The Intelligent Shield',
         logo: {
           alt: 'The Intelligent Shield',
-          src: 'img/logo.svg',
+          src: 'img/logo.png',
         },
         items: [
           {
