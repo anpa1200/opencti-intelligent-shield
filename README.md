@@ -26,6 +26,20 @@ The article page is available at `/docs/intelligent-shield`.
 
 ## OpenCTI Stack
 
+Fast start everything:
+
+```bash
+./scripts/start-all.sh
+```
+
+Stop everything while preserving volumes:
+
+```bash
+./scripts/stop-all.sh
+```
+
+Manual startup:
+
 ```bash
 docker compose up -d
 docker compose -f docker-compose.connectors.yml up -d
