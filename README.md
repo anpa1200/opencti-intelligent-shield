@@ -15,6 +15,16 @@ The real `.env`, local Claude settings, and token scratch files are intentionall
 
 ## Documentation Site
 
+The Docusaurus site is published with GitHub Pages:
+
+- Live site: https://anpa1200.github.io/opencti-intelligent-shield/
+- Main guide: https://anpa1200.github.io/opencti-intelligent-shield/docs/intelligent-shield
+- Source: [docs-site](docs-site/)
+
+The site is generated from the published Medium article, with all article infographics and screenshots stored locally under [docs-site/static/img/article](docs-site/static/img/article/). GitHub Actions builds and deploys it automatically on pushes to `main` that touch `docs-site/`.
+
+Run the documentation locally:
+
 ```bash
 cd docs-site
 npm install
@@ -22,7 +32,7 @@ npm run build
 npm start
 ```
 
-The article page is available at `/docs/intelligent-shield`.
+The local article page is available at `/docs/intelligent-shield`.
 
 ## OpenCTI Stack
 
