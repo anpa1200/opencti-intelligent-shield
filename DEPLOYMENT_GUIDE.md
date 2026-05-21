@@ -585,6 +585,20 @@ networks:
 
 ## 8. Connector Configuration
 
+### Fast Start / Stop Scripts
+
+The repository includes two helper scripts for daily operations:
+
+```bash
+# Start core OpenCTI, wait for the UI/API, then start connectors and AI enrichment
+./scripts/start-all.sh
+
+# Stop AI enrichment, connectors, and core OpenCTI while preserving Docker volumes
+./scripts/stop-all.sh
+```
+
+Use these scripts for normal start/stop operations after `.env` is configured. Use the manual commands below when debugging a specific service startup problem.
+
 ### 8.1 Start the Core Stack
 
 ```bash
@@ -1173,6 +1187,10 @@ curl -s -X POST http://localhost:8080/graphql \
 ### Common Operations
 
 ```bash
+# Fast start/stop the whole stack
+./scripts/start-all.sh
+./scripts/stop-all.sh
+
 # Check all connector health
 docker compose -f docker-compose.connectors.yml ps
 
