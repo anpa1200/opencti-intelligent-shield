@@ -269,7 +269,26 @@ echo "* hard nofile 65536" | sudo tee -a /etc/security/limits.conf
 
 ## 7. Docker Compose Deployment
 
-### 7.1 Directory Structure
+### 7.1 Deploy from GitHub (recommended)
+
+The fastest deployment path is to clone the maintained project repository and create a local `.env` from the sanitized template:
+
+```bash
+cd /home/andrey
+git clone https://github.com/anpa1200/opencti-intelligent-shield.git openCTI
+cd /home/andrey/openCTI
+
+# Create local secrets/config. This file is ignored by Git.
+cp .env.example .env
+nano .env
+
+# Start the full stack after filling in .env
+./scripts/start-all.sh
+```
+
+This gives you the Docker Compose files, OpenCTI patches, AI enrichment connector, helper scripts, and Docusaurus documentation in one checkout. Use the manual sections below if you want to recreate the files by hand or compare the generated content.
+
+### 7.2 Directory Structure
 
 ```
 /home/andrey/openCTI/
@@ -283,7 +302,7 @@ echo "* hard nofile 65536" | sudo tee -a /etc/security/limits.conf
     └── ai-enrichment/            # custom AI connector source
 ```
 
-### 7.2 Environment File
+### 7.3 Environment File
 
 ```bash
 cat > /home/andrey/openCTI/.env << 'EOF'
@@ -330,7 +349,7 @@ EOF
 python3 -c "import uuid; [print(uuid.uuid4()) for _ in range(8)]"
 ```
 
-### 7.3 Core Stack — docker-compose.yml
+### 7.4 Core Stack — docker-compose.yml
 
 ```yaml
 version: "3"
@@ -445,7 +464,7 @@ networks:
     external: true
 ```
 
-### 7.4 Connectors — docker-compose.connectors.yml
+### 7.5 Connectors — docker-compose.connectors.yml
 
 ```yaml
 version: "3"
@@ -552,7 +571,7 @@ networks:
     external: true
 ```
 
-### 7.5 AI Enrichment Connector — docker-compose.ai.yml
+### 7.6 AI Enrichment Connector — docker-compose.ai.yml
 
 ```yaml
 version: "3"

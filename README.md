@@ -36,6 +36,16 @@ The local article page is available at `/docs/intelligent-shield`.
 
 ## OpenCTI Stack
 
+Clone and configure:
+
+```bash
+cd /home/andrey
+git clone https://github.com/anpa1200/opencti-intelligent-shield.git openCTI
+cd openCTI
+cp .env.example .env
+nano .env
+```
+
 Fast start everything:
 
 ```bash
