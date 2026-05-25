@@ -84,6 +84,12 @@ const config = {
             label: 'GitHub',
             position: 'right',
           },
+          {
+            href: 'https://anpa1200.github.io/',
+            label: 'All Projects',
+            position: 'right',
+            className: 'navbar-portfolio-btn',
+          },
         ],
       },
       footer: {
