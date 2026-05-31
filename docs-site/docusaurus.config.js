@@ -30,6 +30,26 @@ const config = {
   organizationName: 'anpa1200',
   projectName: 'opencti-intelligent-shield',
 
+  headTags: [
+    {
+      tagName: 'script',
+      attributes: {
+        async: 'true',
+        src: 'https://www.googletagmanager.com/gtag/js?id=G-TMTG21RVHM',
+      },
+    },
+    {
+      tagName: 'script',
+      attributes: {},
+      innerHTML: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-TMTG21RVHM');
+      `,
+    },
+  ],
+
   onBrokenLinks: 'throw',
 
   // Even if you don't use internationalization, you can use this field to set
@@ -83,10 +103,22 @@ const config = {
             href: 'https://github.com/anpa1200/opencti-intelligent-shield',
             label: 'GitHub',
             position: 'right',
-          },
+          },        {
+          label: 'Projects',
+          position: 'right',
+          items: [
+            {label: 'CTI Analyst Field Manual', href: 'https://anpa1200.github.io/cti-analyst-field-manual/'},
+            {label: 'CTI as a Code', href: 'https://anpa1200.github.io/CTI_as_a_Code/'},
+            {label: 'Operation Desert Hydra', href: 'https://anpa1200.github.io/operation-desert-hydra/'},
+            {label: 'Customer-Driven AI CTI', href: 'https://anpa1200.github.io/customer-driven-ai-cti-project/'},
+            {label: 'Israel Threat Actors CTI', href: 'https://anpa1200.github.io/israel-government-threat-actors-cti/'},
+            {label: 'AI vs Defense', href: 'https://anpa1200.github.io/ai-vs-defense/'},
+            {label: 'HexStrike AI', href: 'https://github.com/0x4m4/hexstrike-ai'},
+          ],
+        },
           {
             href: 'https://anpa1200.github.io/',
-            label: 'All Projects',
+            label: 'Main Page',
             position: 'right',
             className: 'navbar-portfolio-btn',
           },
@@ -95,6 +127,27 @@ const config = {
       footer: {
         style: 'dark',
         links: [
+          {
+            title: 'Ecosystem',
+            items: [
+              {label: 'CTI Analyst Field Manual', href: 'https://anpa1200.github.io/cti-analyst-field-manual/'},
+              {label: 'CTI as a Code', href: 'https://anpa1200.github.io/CTI_as_a_Code/'},
+              {label: 'Operation Desert Hydra', href: 'https://anpa1200.github.io/operation-desert-hydra/'},
+              {label: 'Customer-Driven AI CTI', href: 'https://anpa1200.github.io/customer-driven-ai-cti-project/'},
+              {label: 'Israel Threat Actors CTI', href: 'https://anpa1200.github.io/israel-government-threat-actors-cti/'},
+              {label: 'AI vs Defense', href: 'https://anpa1200.github.io/ai-vs-defense/'},
+              {label: 'HexStrike AI', href: 'https://github.com/0x4m4/hexstrike-ai'},
+            ],
+          },
+          {
+            title: 'Author',
+            items: [
+              {label: 'Medium', href: 'https://medium.com/@1200km'},
+              {label: 'GitHub', href: 'https://github.com/anpa1200'},
+              {label: 'LinkedIn', href: 'https://www.linkedin.com/in/andrey-pautov/'},
+              {label: 'Main Page', href: 'https://anpa1200.github.io/'},
+            ],
+          },
           {
             title: 'Docs',
             items: [
