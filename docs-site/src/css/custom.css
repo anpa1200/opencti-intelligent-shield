@@ -49,3 +49,25 @@
   color: #fff !important;
   text-decoration: none;
 }
+
+
+/* ── Cyber background: visible on every doc page in dark mode ── */
+[data-theme="dark"] html {
+  background: #050c1a url("../../static/img/bg-cyber.png") center / cover fixed no-repeat;
+}
+
+[data-theme="dark"] {
+  --ifm-background-color: rgba(5, 12, 26, 0.82);
+  --ifm-background-surface-color: rgba(10, 18, 35, 0.76);
+  --ifm-navbar-background-color: rgba(5, 10, 22, 0.90);
+}
+
+[data-theme="dark"] .navbar {
+  background: rgba(5, 10, 22, 0.90) !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+[data-theme="dark"] footer.footer {
+  background: rgba(5, 10, 22, 0.92) !important;
+}
