@@ -17,8 +17,8 @@ The real `.env`, local Claude settings, and token scratch files are intentionall
 
 The Docusaurus site is published with GitHub Pages:
 
-- Live site: https://anpa1200.github.io/opencti-intelligent-shield/
-- Main guide: https://anpa1200.github.io/opencti-intelligent-shield/docs/intelligent-shield
+- Live site: https://1200km.com/opencti-intelligent-shield/
+- Main guide: https://1200km.com/opencti-intelligent-shield/docs/intelligent-shield
 - Source: [docs-site](docs-site/)
 
 The site is generated from the published Medium article, with all article infographics and screenshots stored locally under [docs-site/static/img/article](docs-site/static/img/article/). GitHub Actions builds and deploys it automatically on pushes to `main` that touch `docs-site/`.
