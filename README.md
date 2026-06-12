@@ -67,3 +67,7 @@ docker compose -f docker-compose.ai.yml up -d --build
 ```
 
 Use the deployment guide for full configuration and operational notes.
+
+## Related CTI-to-Detection Workflow
+
+Use the [ThreatMapper AI CTI workbench](https://1200km.com/threatmapper/) when OpenCTI report or relationship context needs to become an ATT&CK mapping workspace, group/campaign TTP-overlap lead, coverage-gap review, or detection-backlog handoff.
