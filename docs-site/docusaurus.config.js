@@ -83,6 +83,12 @@ const config = {
     ({
       // Replace with your project's social card
       image: 'img/article/01-1-yZJrYF0KW4x5gzDg6xNN6A.png',
+      metadata: [
+        {
+          name: 'keywords',
+          content: 'OpenCTI, threat intelligence platform, STIX 2.1, AI enrichment, Claude AI connector, IOC enrichment, confidence scoring, OpenCTI deployment, Docker Compose, threat intelligence automation',
+        },
+      ],
       colorMode: {
         respectPrefersColorScheme: true,
       },
