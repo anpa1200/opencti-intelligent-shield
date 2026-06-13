@@ -74,7 +74,9 @@ const config = {
         },
       ],
       colorMode: {
-        respectPrefersColorScheme: true,
+        defaultMode: 'dark',
+        disableSwitch: false,
+        respectPrefersColorScheme: false,
       },
       navbar: {
         title: 'The Intelligent Shield',
