@@ -25,7 +25,7 @@ const config = {
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/opencti-intelligent-shield/',
 
-  scripts: [{src: 'https://1200km.com/assets/docusaurus-ecosystem.js?v=20260613-1', defer: true}],
+  scripts: [{src: 'https://1200km.com/assets/docusaurus-ecosystem.js?v=20260614-2', defer: true}],
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'anpa1200',
