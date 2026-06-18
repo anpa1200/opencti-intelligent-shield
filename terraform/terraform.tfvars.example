@@ -1,0 +1,36 @@
+# Copy to terraform.tfvars and fill in.
+
+# --- Required ---
+project_id = "my-gcp-project-id"
+
+# --- Placement (optional overrides) ---
+region = "europe-west1"
+zone   = "europe-west1-b"
+
+# --- Sizing ---
+# e2-standard-8 = 8 vCPU / 32 GB (recommended)
+# e2-standard-4 = 4 vCPU / 16 GB (minimum, tight)
+machine_type      = "e2-standard-8"
+boot_disk_size_gb = 200
+
+# --- Access control (LOCK THESE DOWN) ---
+# Replace with "YOUR.IP.ADDR.ESS/32" to restrict access.
+ssh_source_ranges = ["0.0.0.0/0"]
+app_source_ranges = ["0.0.0.0/0"]
+
+# Expose MinIO/RabbitMQ/Kibana/ES consoles too (default false).
+expose_admin_consoles = false
+
+# --- Features ---
+enable_kibana       = false
+enable_ai_connector = true
+
+# --- App config ---
+opencti_admin_email = "admin@opencti.local"
+# Leave empty to auto-generate (read it via: terraform output -raw opencti_admin_password)
+opencti_admin_password = ""
+
+# --- API keys (optional; leave empty to fill in later on the VM) ---
+anthropic_api_key  = ""
+alienvault_api_key = ""
+nvd_api_key        = ""

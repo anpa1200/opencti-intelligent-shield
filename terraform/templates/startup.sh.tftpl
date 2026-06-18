@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+###############################################################################
+# OpenCTI Intelligent Shield - GCP bootstrap
+# Rendered by Terraform. Runs once on first boot as root.
+###############################################################################
+set -euxo pipefail
+
+LOG=/var/log/opencti-bootstrap.log
+exec > >(tee -a "$LOG") 2>&1
+
+APP_DIR=/opt/opencti
+MARKER=/var/lib/opencti-bootstrapped
+
+if [ -f "$MARKER" ]; then
+  echo "[bootstrap] Already bootstrapped; bringing stack up and exiting."
+  cd "$APP_DIR" && docker compose -f docker-compose.yml up -d || true
+  exit 0
+fi
+
+echo "[bootstrap] Waiting for network..."
+until ping -c1 -W2 8.8.8.8 >/dev/null 2>&1; do sleep 2; done
+
+export DEBIAN_FRONTEND=noninteractive
+
+###############################################################################
+# 1. Kernel tuning required by Elasticsearch
+###############################################################################
+echo "[bootstrap] Applying kernel tuning..."
+sysctl -w vm.max_map_count=1048575
+grep -q "vm.max_map_count" /etc/sysctl.conf || echo "vm.max_map_count=1048575" >> /etc/sysctl.conf
+grep -q "^\* soft nofile" /etc/security/limits.conf || echo "* soft nofile 65536" >> /etc/security/limits.conf
+grep -q "^\* hard nofile" /etc/security/limits.conf || echo "* hard nofile 65536" >> /etc/security/limits.conf
+
+###############################################################################
+# 2. Install Docker Engine + compose plugin
+###############################################################################
+echo "[bootstrap] Installing Docker..."
+apt-get update -y
+apt-get install -y ca-certificates curl gnupg lsb-release git
+
+install -m 0755 -d /etc/apt/keyrings
+if [ ! -f /etc/apt/keyrings/docker.gpg ]; then
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+  chmod a+r /etc/apt/keyrings/docker.gpg
+fi
+
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+  > /etc/apt/sources.list.d/docker.list
+
+apt-get update -y
+apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+systemctl enable --now docker
+
+###############################################################################
+# 3. Fetch the project
+###############################################################################
+echo "[bootstrap] Cloning ${repo_url} (${repo_branch})..."
+rm -rf "$APP_DIR"
+git clone --branch "${repo_branch}" --depth 1 "${repo_url}" "$APP_DIR"
+cd "$APP_DIR"
+
+###############################################################################
+# 4. Materialize the Terraform-generated .env
+###############################################################################
+echo "[bootstrap] Writing .env..."
+echo "${env_file_b64}" | base64 -d > "$APP_DIR/.env"
+chmod 600 "$APP_DIR/.env"
+
+###############################################################################
+# 5. Bring the stack up
+###############################################################################
+docker network create opencti_network 2>/dev/null || true
+
+echo "[bootstrap] Starting OpenCTI core stack..."
+%{ if enable_kibana ~}
+docker compose -f docker-compose.yml -f docker-compose.kibana.yml up -d
+%{ else ~}
+docker compose -f docker-compose.yml up -d
+%{ endif ~}
+
+echo "[bootstrap] Waiting for OpenCTI API (up to 20 min)..."
+deadline=$(( $(date +%s) + 1200 ))
+until curl -fsS http://localhost:8080 >/dev/null 2>&1; do
+  if [ "$(date +%s)" -ge "$deadline" ]; then
+    echo "[bootstrap] OpenCTI did not become reachable in time; continuing anyway."
+    break
+  fi
+  sleep 10
+done
+
+echo "[bootstrap] Starting feed connectors..."
+docker compose -f docker-compose.connectors.yml up -d
+
+%{ if enable_ai_connector ~}
+echo "[bootstrap] Building and starting AI enrichment connector..."
+docker compose -f docker-compose.ai.yml up -d --build
+%{ endif ~}
+
+touch "$MARKER"
+echo "[bootstrap] Done. Stack is up."
+docker compose -f docker-compose.yml ps
