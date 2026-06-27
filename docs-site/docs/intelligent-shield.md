@@ -1,8 +1,8 @@
 ---
 id: intelligent-shield
-title: The Intelligent Shield
+title: The Intelligent Shield — OpenCTI AI CTI Platform Guide
 sidebar_label: The Intelligent Shield
-description: Deploy AI-driven enrichment in OpenCTI — STIX 2.1 platform setup, free and commercial feeds, Claude AI connector, security hardening, and real-world threat investigation workflows.
+description: Practical OpenCTI AI CTI platform guide covering STIX 2.1 deployment, feeds, Claude AI enrichment, ATT&CK mapping, security hardening, and investigation workflows.
 keywords:
   - OpenCTI
   - threat intelligence platform

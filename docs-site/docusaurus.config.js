@@ -10,8 +10,8 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'The Intelligent Shield',
-  tagline: 'Deploying AI-driven enrichment in OpenCTI',
+  title: 'The Intelligent Shield — OpenCTI AI CTI Platform Guide',
+  tagline: 'OpenCTI STIX 2.1 deployment, AI enrichment, ATT&CK mapping, and secure CTI workflows',
   favicon: 'img/logo.png',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -69,6 +69,10 @@ const config = {
       // Replace with your project's social card
       image: 'img/article/01-1-yZJrYF0KW4x5gzDg6xNN6A.png',
       metadata: [
+        {
+          name: 'description',
+          content: 'The Intelligent Shield is a practical OpenCTI AI CTI platform guide covering STIX 2.1 deployment, feeds, Claude AI enrichment, ATT&CK mapping, security hardening, and investigation workflows.',
+        },
         {
           name: 'keywords',
           content: 'OpenCTI, threat intelligence platform, STIX 2.1, AI enrichment, Claude AI connector, IOC enrichment, confidence scoring, OpenCTI deployment, Docker Compose, threat intelligence automation',
