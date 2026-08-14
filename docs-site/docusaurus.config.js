@@ -5,12 +5,42 @@
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
 import {themes as prismThemes} from 'prism-react-renderer';
+import {execFileSync} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
+
+const siteDir = fileURLToPath(new URL('.', import.meta.url));
+const landingPageSources = new Map([
+  ['https://1200km.com/opencti-intelligent-shield/', 'src/pages/index.js'],
+]);
+
+function readGitDate(sourcePath) {
+  try {
+    const date = execFileSync(
+      'git',
+      ['log', '-1', '--format=%cs', '--', sourcePath],
+      {cwd: siteDir, encoding: 'utf8'},
+    ).trim();
+    return /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+async function addLandingPageLastmod({defaultCreateSitemapItems, ...params}) {
+  const items = await defaultCreateSitemapItems(params);
+  return items.map((item) => {
+    const sourcePath = landingPageSources.get(item.url);
+    if (!sourcePath || item.lastmod) return item;
+    const lastmod = readGitDate(sourcePath);
+    return lastmod ? {...item, lastmod} : item;
+  });
+}
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'The Intelligent Shield — OpenCTI AI CTI Platform Guide',
+  title: '1200km',
   tagline: 'OpenCTI STIX 2.1 deployment, AI enrichment, ATT&CK mapping, and secure CTI workflows',
   favicon: 'img/logo.png',
 
@@ -50,8 +80,13 @@ const config = {
           sidebarPath: './sidebars.js',
           editUrl:
             'https://github.com/anpa1200/opencti-intelligent-shield/tree/main/docs-site/',
+          showLastUpdateTime: true,
         },
         blog: false,
+        sitemap: {
+          lastmod: 'date',
+          createSitemapItems: addLandingPageLastmod,
+        },
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -69,6 +104,10 @@ const config = {
       // Replace with your project's social card
       image: 'img/article/01-1-yZJrYF0KW4x5gzDg6xNN6A.png',
       metadata: [
+        {
+          property: 'og:site_name',
+          content: '1200km — Andrey Pautov Security Research',
+        },
         {
           name: 'description',
           content: 'The Intelligent Shield is a practical OpenCTI AI CTI platform guide covering STIX 2.1 deployment, feeds, Claude AI enrichment, ATT&CK mapping, security hardening, and investigation workflows.',
@@ -110,7 +149,7 @@ const config = {
             {label: 'Customer-Driven AI CTI', href: 'https://1200km.com/customer-driven-ai-cti-project/'},
             {label: 'Israel Threat Actors CTI', href: 'https://1200km.com/israel-government-threat-actors-cti/'},
             {label: 'AI vs Defense', href: 'https://1200km.com/ai-vs-defense/'},
-            {label: 'HexStrike AI', href: 'https://github.com/0x4m4/hexstrike-ai'},
+            {label: 'HexStrike AI (upstream project)', href: 'https://github.com/0x4m4/hexstrike-ai'},
           ],
         },
           {
@@ -133,7 +172,7 @@ const config = {
               {label: 'Customer-Driven AI CTI', href: 'https://1200km.com/customer-driven-ai-cti-project/'},
               {label: 'Israel Threat Actors CTI', href: 'https://1200km.com/israel-government-threat-actors-cti/'},
               {label: 'AI vs Defense', href: 'https://1200km.com/ai-vs-defense/'},
-              {label: 'HexStrike AI', href: 'https://github.com/0x4m4/hexstrike-ai'},
+              {label: 'HexStrike AI (upstream project)', href: 'https://github.com/0x4m4/hexstrike-ai'},
             ],
           },
           {
