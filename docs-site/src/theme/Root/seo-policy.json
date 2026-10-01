@@ -1,0 +1,48 @@
+{
+  "prefix": "/opencti-intelligent-shield/",
+  "pages": {
+    "/opencti-intelligent-shield/": {
+      "classification": "Priority",
+      "reason": "Substantive practitioner content or established navigation entry point",
+      "word_count": 51,
+      "title": "The Intelligent Shield | 1200km",
+      "description": "Build an analyst-reviewed OpenCTI workflow with STIX 2.1, trusted feeds, Claude enrichment, ATT&CK mapping, security hardening, and investigations."
+    },
+    "/opencti-intelligent-shield/docs/intelligent-shield": {
+      "classification": "Excluded",
+      "reason": "HTTP 301; URL retained, not a sitemap candidate",
+      "word_count": 4521,
+      "title": "The Intelligent Shield — OpenCTI AI CTI Platform Guide | 1200km",
+      "description": "Deploy OpenCTI as a structured CTI platform with STIX 2.1 feeds, ATT&CK relationships, Claude enrichment, hardened services, and investigation workflows."
+    },
+    "/opencti-intelligent-shield/docs/intelligent-shield/": {
+      "classification": "Supporting",
+      "reason": "Substantive supporting reference or documentation",
+      "word_count": 4521,
+      "title": "OpenCTI AI Workflow — Intelligent Shield Guide | 1200km",
+      "description": "Deploy OpenCTI as a structured CTI platform with STIX 2.1 feeds, ATT&CK relationships, Claude enrichment, hardened services, and investigation workflows."
+    }
+  },
+  "gitHistory": true,
+  "person": {
+    "@type": "Person",
+    "@id": "https://1200km.com/#person",
+    "name": "Andrey Pautov",
+    "url": "https://1200km.com/",
+    "sameAs": [
+      "https://github.com/anpa1200",
+      "https://medium.com/@1200km",
+      "https://www.linkedin.com/in/andrey-pautov/",
+      "https://infosecwriteups.com/@1200km"
+    ]
+  },
+  "website": {
+    "@type": "WebSite",
+    "@id": "https://1200km.com/#website",
+    "url": "https://1200km.com/",
+    "name": "1200km Security Research",
+    "publisher": {
+      "@id": "https://1200km.com/#person"
+    }
+  }
+}
